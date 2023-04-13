@@ -20,7 +20,9 @@ async function main() {
   console.log('Minting 3 properties...\n')
 
   for (let i = 0; i < 3; i++) {
-    const transaction = await realEstate.connect(seller).mint('https://ipfs.io/ipfs/QmQVcpsjrA6cr1iJjZAodYwmPekYgbnXGo4DFubJiLc2EB/${i + 1}.json');
+    const URI = `https://cloudflare-ipfs.com/ipfs/QmQVcpsjrA6cr1iJjZAodYwmPekYgbnXGo4DFubJiLc2EB/${i + 1}.json`
+    console.log("URI " + i + ": " + URI)
+    const transaction = await realEstate.connect(seller).mint(URI);
     await transaction.wait();
   }
 
@@ -32,6 +34,9 @@ async function main() {
     lender.address
   );
   await escrow.deployed();
+
+  console.log(`Deployed Escrow Contract at: ${escrow.address}`);
+
 
   for (let i = 0; i < 3; i++) {
     let transaction = await realEstate.connect(seller).approve(escrow.address, i + 1)
